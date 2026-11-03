@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diario de Estudio</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="contenedor">
+
+    <header>
+      <h1>📔 Diario de Estudios de ingenieria de sistemas</h1>
+      <p class="subtitulo">Apunta tus sesiones y mira cuántos días seguidos llevas usando la app felicitaciones.</p>
+    </header>
+
+    <!-- Tarjeta con la racha (días seguidos estudiando) -->
+    <section class="tarjeta-racha">
+      <span class="fuego">🔥</span>
+      <span class="numero-racha" id="numero-racha">0</span>
+      <span class="texto-racha" id="texto-racha">días seguidos</span>
+    </section>
+
+    <!-- Formulario para registrar una sesión -->
+    <form id="formulario" class="tarjeta">
+      <h2>Nueva sesión</h2>
+
+      <div class="campo">
+        <label for="fecha">Fecha</label>
+        <input type="date" id="fecha" name="fecha" required />
+      </div>
+
+      <div class="campo">
+        <label for="tema">Tema</label>
+        <input type="text" id="tema" name="tema" placeholder="Ej: JavaScript - funciones" required />
+      </div>
+
+      <div class="campo">
+        <label for="minutos">Minutos</label>
+        <input type="number" id="minutos" name="minutos" placeholder="Ej: 45" min="1" required />
+      </div>
+
+      <button type="submit" class="boton">Guardar sesión</button>
+    </form>
+
+    <!-- Lista con las sesiones guardadas -->
+    <section class="tarjeta">
+      <h2>Mis sesiones</h2>
+      <ul id="lista-sesiones"></ul>
+      <p id="mensaje-vacio" class="mensaje-vacio">
+        Todavía no hay sesiones. ¡Registra la primera! 💪
+      </p>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

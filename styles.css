@@ -1,5 +1,5 @@
 /* ============================================
-   Diario de Estudio - Estilos
+   Diario de Estudios - Estilos
    ============================================ */
 
 /* Reset básico: quita márgenes que el navegador añade por defecto */
@@ -11,7 +11,7 @@
 body {
   font-family: "Segoe UI", system-ui, sans-serif;
   background: #f0f4f8;
-  color: #48352d;
+  color: #2d3748;
   padding: 16px;
 }
 
@@ -44,7 +44,7 @@ header {
 /* ---------- Racha ---------- */
 
 .tarjeta-racha {
-  background: lab(80.85% -67.1 51.76);
+  background: #4f46e5;
   color: #ffffff;
   border-radius: 12px;
   padding: 24px;
@@ -61,7 +61,7 @@ header {
   font-size: 48px;
   font-weight: bold;
   display: block;
-  line-height: 1; /*compacta el espacio entre el 🔥 y el número */
+  line-height: 1; /* compacta el espacio entre el 🔥 y el número */
 }
 
 .texto-racha {
@@ -143,20 +143,6 @@ header {
   color: #4f46e5;
   white-space: nowrap; /* evita que "45 min" se parta en dos líneas */
   margin-left: 12px;
-}
-
-/* Botón de borrar (la X de cada fila) */
-.borrar {
-  background: none;
-  border: none;
-  color: #a0aec0;
-  font-size: 18px;
-  cursor: pointer;
-  padding: 4px;
-}
-
-.borrar:hover {
-  color: #e53e3e;
 }
 
 .mensaje-vacio {

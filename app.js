@@ -1,8 +1,8 @@
 // ============================================
-// Diario de Estudio - Lógica
+// Diario de Estudios - Lógica
 // ============================================
 
-//clave bajo la que guardamos todo en localStorage
+// Clave bajo la que guardamos todo en localStorage
 const CLAVE_SESIONES = "sesiones-de-diario-de-estudio";
 
 // ---------- Referencias a los elementos de la página ----------
@@ -44,24 +44,15 @@ function fechaDeHoy() {
   return aFormatoFecha(new Date());
 }
 
-// Convierte "2026-11-02" en "2 nov 2026" para mostrarlo bonito.
-// Añadimos "T00:00:00" para que la fecha se lea como hora local y no cambie de día.
-function formatearFecha(fecha) {
-  return new Date(fecha + "T00:00:00").toLocaleDateString("es-ES", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-}
-
-// Calcula la racha: cuántos días seguidos (contando desde hoy o ayer) hay con sesiones.
+// Calcula la racha: los días seguidos con sesión que terminan hoy (o ayer,
+// si es que hoy todavía no ha habido sesión).
 function calcularRacha(sesiones) {
   // Juntamos todas las fechas distintas en un conjunto (Set).
   // El Set evita fechas repetidas automáticamente.
   const fechas = new Set(sesiones.map((sesion) => sesion.fecha));
 
-  // Contamos hacia atrás día a día.
-  // Si hoy no hay sesión, aún puede haber racha si la hay empezando ayer.
+  // Contamos hacia atrás día a día. Con al menos una sesión ese día vale.
+  // Si hoy no hay sesión, la racha sigue viva empezando a contar desde ayer.
   let racha = 0;
   let dia = new Date();
 
@@ -78,6 +69,30 @@ function calcularRacha(sesiones) {
 }
 
 // ---------- Pintar en la pantalla ----------
+
+// Pinta la racha y su texto.
+function pintarRacha() {
+  const racha = calcularRacha(leerSesiones());
+  numeroRacha.textContent = racha;
+
+  if (racha === 0) {
+    textoRacha.textContent = "Empieza tu racha hoy 💪";
+  } else if (racha === 1) {
+    textoRacha.textContent = "día seguido";
+  } else {
+    textoRacha.textContent = "días seguidos";
+  }
+}
+
+// Convierte "2026-11-02" en "2 nov 2026" para mostrarlo bonito.
+// Añadimos "T00:00:00" para que la fecha se lea como hora local y no cambie de día.
+function formatearFecha(fecha) {
+  return new Date(fecha + "T00:00:00").toLocaleDateString("es-ES", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
 
 // Borra la lista y la vuelve a crear con las sesiones actuales,
 // ordenadas de la más reciente a la más antigua.
@@ -101,7 +116,7 @@ function pintarLista() {
     detalles.className = "sesion-detalles";
 
     const tema = document.createElement("strong");
-    tema.textContent = sesion.tema; // textContent = seguro con cualquier texto
+    tema.textContent = sesion.tema;
 
     const fecha = document.createElement("small");
     fecha.textContent = formatearFecha(sesion.fecha);
@@ -110,38 +125,16 @@ function pintarLista() {
     minutos.className = "sesion-minutos";
     minutos.textContent = `${sesion.minutos} min`;
 
-    const botonBorrar = document.createElement("button");
-    botonBorrar.className = "borrar";
-    botonBorrar.textContent = "🗑️";
-    botonBorrar.title = "Borrar sesión";
-    // Con data-fecha sabemos cuál borrar sin depender del orden del array.
-    botonBorrar.dataset.fecha = sesion.fecha;
-    botonBorrar.dataset.tema = sesion.tema;
-
     detalles.append(tema, fecha);
-    item.append(detalles, minutos, botonBorrar);
+    item.append(detalles, minutos);
     listaSesiones.append(item);
-  }
-}
-
-// Actualiza el número de la racha y su texto.
-function pintarRacha() {
-  const racha = calcularRacha(leerSesiones());
-  numeroRacha.textContent = racha;
-
-  if (racha === 0) {
-    textoRacha.textContent = "Empieza tu racha hoy 💪";
-  } else if (racha === 1) {
-    textoRacha.textContent = "día seguido";
-  } else {
-    textoRacha.textContent = "días seguidos";
   }
 }
 
 // Vuelve a pintar todo lo que depende de los datos.
 function pintarTodo() {
-  pintarLista();
   pintarRacha();
+  pintarLista();
 }
 
 // ---------- Eventos ----------
@@ -182,25 +175,6 @@ formulario.addEventListener("submit", (evento) => {
   campoFecha.value = fechaDeHoy();
 
   pintarTodo();
-});
-
-// Al pulsar una X, borramos esa sesión concreta.
-listaSesiones.addEventListener("click", (evento) => {
-  const boton = evento.target.closest(".borrar");
-  if (!boton) return; // el clic no fue en un botón de borrar
-
-  const sesiones = leerSesiones();
-
-  // Buscamos la sesión que coincide con fecha y tema del botón pulsado.
-  const indice = sesiones.findIndex(
-    (sesion) => sesion.fecha === boton.dataset.fecha && sesion.tema === boton.dataset.tema
-  );
-
-  if (indice !== -1) {
-    sesiones.splice(indice, 1); // quitamos 1 elemento en esa posición
-    guardarSesiones(sesiones);
-    pintarTodo();
-  }
 });
 
 // ---------- Arranque ----------

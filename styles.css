@@ -69,6 +69,33 @@ header {
   opacity: 0.9;
 }
 
+/* ---------- Estadísticas ---------- */
+
+.cajas-estadisticas {
+  display: flex;          /* pone las dos cajas una al lado de la otra */
+  gap: 12px;
+}
+
+.caja {
+  flex: 1;                /* cada caja ocupa el mismo ancho */
+  text-align: center;
+  background: #f0f4f8;
+  border-radius: 8px;
+  padding: 14px 8px;
+}
+
+.caja-numero {
+  font-size: 28px;
+  font-weight: bold;
+  color: #4f46e5;
+  display: block;
+}
+
+.caja-texto {
+  font-size: 13px;
+  color: #718096;
+}
+
 /* ---------- Formulario ---------- */
 
 .campo {

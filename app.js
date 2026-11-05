@@ -15,6 +15,8 @@ const listaSesiones = document.getElementById("lista-sesiones");
 const mensajeVacio = document.getElementById("mensaje-vacio");
 const numeroRacha = document.getElementById("numero-racha");
 const textoRacha = document.getElementById("texto-racha");
+const totalMinutos = document.getElementById("total-minutos");
+const mejorRacha = document.getElementById("mejor-racha");
 
 // ---------- Utilidades ----------
 
@@ -42,6 +44,46 @@ function aFormatoFecha(dia) {
 // Devuelve la fecha de hoy.
 function fechaDeHoy() {
   return aFormatoFecha(new Date());
+}
+
+// Hace la suma de todos los minutos estudiados.
+// reduce recorre la lista acumulando: suma + minutos de cada sesión.
+function sumarMinutos(sesiones) {
+  return sesiones.reduce((suma, sesion) => suma + sesion.minutos, 0);
+}
+
+// Comprueba si "fechaActual" es el día justo después de "fechaAnterior".
+function esDiaSiguiente(fechaAnterior, fechaActual) {
+  const dia = new Date(fechaAnterior + "T00:00:00");
+  dia.setDate(dia.getDate() + 1); // avanza un día
+  return aFormatoFecha(dia) === fechaActual;
+}
+
+// Calcula la mejor racha histórica: cuántos días seguidos se han estudiado
+// alguna vez, aunque esa racha ya se haya roto.
+function calcularMejorRacha(sesiones) {
+  // Fechas sin repetir y ordenadas de la más antigua a la más nueva.
+  const fechas = [...new Set(sesiones.map((sesion) => sesion.fecha))].sort();
+
+  let mejor = 0;
+  let rachaActual = 0;
+  let fechaAnterior = null;
+
+  for (const fecha of fechas) {
+    if (fechaAnterior !== null && esDiaSiguiente(fechaAnterior, fecha)) {
+      rachaActual = rachaActual + 1; // continúa la racha anterior
+    } else {
+      rachaActual = 1; // empieza una racha nueva
+    }
+
+    if (rachaActual > mejor) {
+      mejor = rachaActual;
+    }
+
+    fechaAnterior = fecha;
+  }
+
+  return mejor;
 }
 
 // Calcula la racha: los días seguidos con sesión que terminan hoy (o ayer,
@@ -131,9 +173,17 @@ function pintarLista() {
   }
 }
 
+// Pinta las estadísticas de progreso.
+function pintarEstadisticas() {
+  const sesiones = leerSesiones();
+  totalMinutos.textContent = sumarMinutos(sesiones);
+  mejorRacha.textContent = calcularMejorRacha(sesiones);
+}
+
 // Vuelve a pintar todo lo que depende de los datos.
 function pintarTodo() {
   pintarRacha();
+  pintarEstadisticas();
   pintarLista();
 }
 

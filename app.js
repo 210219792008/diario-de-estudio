@@ -48,8 +48,18 @@ function fechaDeHoy() {
 
 // Hace la suma de todos los minutos estudiados.
 // reduce recorre la lista acumulando: suma + minutos de cada sesión.
+// Las fechas del futuro no suman todavía: solo cuentan hoy y días pasados.
 function sumarMinutos(sesiones) {
-  return sesiones.reduce((suma, sesion) => suma + sesion.minutos, 0);
+  return sesiones
+    .filter((sesion) => esPasadoOHoy(sesion.fecha))
+    .reduce((suma, sesion) => suma + sesion.minutos, 0);
+}
+
+// Comprueba si una fecha no es del futuro (hoy o antes sí cuentan).
+// Comparar los textos "AAAA-MM-DD" como letras funciona porque el formato
+// deja los más antiguos antes: "2026-10-30" < "2026-11-09".
+function esPasadoOHoy(fecha) {
+  return fecha <= fechaDeHoy();
 }
 
 // Comprueba si "fechaActual" es el día justo después de "fechaAnterior".
@@ -61,9 +71,12 @@ function esDiaSiguiente(fechaAnterior, fechaActual) {
 
 // Calcula la mejor racha histórica: cuántos días seguidos se han estudiado
 // alguna vez, aunque esa racha ya se haya roto.
+// Las fechas del futuro no cuentan como días estudiados hasta su día.
 function calcularMejorRacha(sesiones) {
   // Fechas sin repetir y ordenadas de la más antigua a la más nueva.
-  const fechas = [...new Set(sesiones.map((sesion) => sesion.fecha))].sort();
+  const fechas = [...new Set(sesiones.map((sesion) => sesion.fecha))]
+    .filter((fecha) => esPasadoOHoy(fecha))
+    .sort();
 
   let mejor = 0;
   let rachaActual = 0;

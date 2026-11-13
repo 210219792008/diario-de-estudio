@@ -11,6 +11,8 @@ tarea, resumiendo lo que importa y borrando lo que ya no aporte.
   El historial incluye una portada subida a mano desde la web de GitHub, fusionada
   sin dañar nada (commit `3b66e15`).
 - Reglas del proyecto en `AGENTS.md`; agente `tutor` en `.opencode/agents/tutor.md`.
+- Sincronización probada en ambos sentidos desde este equipo (Windows): `git pull`
+  y `git push` funcionan sin conflictos (nov 2026).
 
 ## Decisiones (y por qué)
 - Sin backend ni dependencias: cualquiera debe poder abrirlo con doble clic (`file://`).

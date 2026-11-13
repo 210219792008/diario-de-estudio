@@ -44,7 +44,8 @@ programar.
 - Al terminar, resume qué has cambiado y cualquier decisión que deba revisar.
 
 ## Límites
-- ✅ Siempre: respetar las reglas de fechas y racha, mantener los textos en español.
+- ✅ Siempre: respetar las reglas de fechas y racha, mantener los textos en español
+  y actualizar `MEMORY.md` al terminar cada tarea.
 - ⚠ Pregunta antes: crear archivos nuevos, cambiar el formato de los datos guardados.
 - 🚫 Nunca: añadir dependencias, frameworks o un paso de build.
 
@@ -52,3 +53,13 @@ programar.
 - No hay tests ni lint. Probar abriendo `index.html` en el navegador.
 - Para empezar de cero: DevTools → Application → Local Storage → borrar la clave
   `sesiones-de-diario-de-estudio`
+
+## Memoria (MEMORY.md)
+- Al empezar una tarea, lee `MEMORY.md` para conocer el estado del proyecto y las
+  decisiones tomadas.
+- Al terminar una tarea, actualízalo: estado actual, decisiones importantes (con su
+  porqué) y errores a evitar.
+- Mantenlo breve (máximo ~50 líneas): resume o elimina lo que ya no aporte.
+- Si algo se convierte en regla permanente, propón moverlo a `AGENTS.md` en lugar de
+  dejarlo en la memoria.
+- No guardes nunca datos sensibles (claves, tokens, datos personales).
